@@ -7,7 +7,7 @@ module.exports = {
     },
     env: { node: true, browser: true },
     extends: [require.resolve('eslint-config-airbnb'), 'plugin:react/recommended'],
-    plugins: ['import', 'jsx-a11y', 'react'],
+    plugins: ['import', 'jsx-a11y', 'react', 'react-hooks'],
     rules: {
         'arrow-parens': ['error', 'always'],
         'arrow-body-style': ['error', 'as-needed'],
@@ -57,5 +57,7 @@ module.exports = {
             },
         }],
         'operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before' } }],
+        'react-hooks/rules-of-hooks': 'error',
+        'react-hooks/exhaustive-deps': 'warn',
     },
 };
