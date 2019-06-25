@@ -10,8 +10,16 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpack from 'webpack';
 import helmet from 'helmet';
+import session from 'express-session';
+import connectSequelize from 'connect-session-sequelize';
+
+
+import db from '../database';
 
 import config from './environment';
+
+const SequelizeStore = connectSequelize(session.Store);
+const sessionsStore = new SequelizeStore({ db: db.sequelize, table: 'session' });
 
 export default function (app) {
   app.set('port', config.port);
@@ -46,6 +54,18 @@ export default function (app) {
   app.use(bodyParser.raw({ type: 'application/soap+xml' }));
   app.use(bodyParser.json({ limit: '20mb' }));
   app.use(cookieParser());
+
+  app.use(session({
+    name: config.session.name,
+    cookie: { maxAge: config.session.maxAge, httpOnly: false },
+    secret: config.session.secret,
+    store: sessionsStore,
+    saveUninitialized: false,
+    resave: false,
+    unset: 'destroy',
+    proxy: true,
+    rolling: true,
+  }));
 
   app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
     if (err.statusCode === 413) return res.status(413).json(err);

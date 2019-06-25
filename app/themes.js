@@ -16,6 +16,12 @@ const theme = createMuiTheme({
   },
   overrides: {
     MuiFormLabel: { root: { color: SECONDARY, '&$focused': { color: SECONDARY } } },
+    MuiPopover: {
+      paper: {
+        backgroundColor: PRIMARY,
+        border: `1px solid ${SECONDARY}`,
+      },
+    },
   },
 });
 
