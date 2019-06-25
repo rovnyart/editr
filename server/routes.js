@@ -1,6 +1,8 @@
 /* eslint-disable global-require */
 import path from 'path';
 
+import passport from 'passport';
+
 import config from './config/environment';
 
 const dontCacheAPI = (req, res, next) => {
@@ -9,9 +11,15 @@ const dontCacheAPI = (req, res, next) => {
 };
 
 export default function (app) {
+  app.use(passport.initialize());
+  app.use(passport.session());
+
   app.all('/api/*', dontCacheAPI);
 
   app.use('/api/notes', require('./api/notes').default);
+  app.use('/api/users', require('./api/users').default);
+
+  app.use('/auth', require('./auth').default);
 
   app.get('*', (req, res) => {
     if (process.env.NODE_ENV !== 'development') {

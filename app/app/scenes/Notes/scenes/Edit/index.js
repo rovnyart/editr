@@ -19,15 +19,16 @@ import { languages } from './constants';
 
 languages.forEach((language) => import(`brace/mode/${language}`));
 
+
 const useStyles = makeStyles({
   fullHeight: { height: '100%' },
 });
 
 export default function Edit({ match: { params: { id } = {} }, history }) {
+  const showInfo = useNotification('info');
   const classes = useStyles();
   const [, loaded, data, load, error] = useData({ dataType: 'note', options: id });
   const { notification } = useContext(AppContext);
-  const showInfo = useNotification('info');
 
   const { note } = data || {};
 

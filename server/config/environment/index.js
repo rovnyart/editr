@@ -15,6 +15,12 @@ const all = {
     models: path.resolve('server/api'),
     migrations: path.resolve('server/database/migrations'),
   },
+  session: {
+    name: 'eddtr.sid',
+    secret: 'Nta$K-AP1',
+    maxAge: 180 * 60 * 1000,
+  },
+
 };
 
 // Export the config object based on the NODE_ENV

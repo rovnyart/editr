@@ -3,6 +3,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 const PRIMARY = '#18181e';
 const SECONDARY = '#dec79b';
+const PRIMARY_LIGHT = '#46464b';
 
 const theme = createMuiTheme({
   useNextVariants: true,
@@ -16,6 +17,15 @@ const theme = createMuiTheme({
   },
   overrides: {
     MuiFormLabel: { root: { color: SECONDARY, '&$focused': { color: SECONDARY } } },
+    MuiPopover: {
+      paper: {
+        backgroundColor: PRIMARY,
+        border: `1px solid ${SECONDARY}`,
+      },
+    },
+    MuiInput: {
+      root: { backgroundColor: PRIMARY_LIGHT },
+    },
   },
 });
 
