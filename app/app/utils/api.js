@@ -17,14 +17,14 @@ const ax = axios.create({
 
 const handleError = (error) => {
   let err;
-  const fallbackError = new Error('При выполнении подзапроса возникла ошибка, попробуйте повторить операцию');
+  const fallbackError = new Error('Error occured. Please try again.');
 
   if (error.response) { // The request was made and the server responded with a status code that falls out of the range of 2xx
     err = (error.response.data && error.response.data.message)
       ? error.response.data
       : new Error(`requested url returned error: ${error.response.status} ${error.response.statusText}`);
   } else if (error.request) { // The request was made but no response was received `error.request` is an instance of XMLHttpRequest
-    err = new Error('При выполнении запроса к серверу произошла ошибка. Проверьте соединение с Интернетом и повторите операцию.'); //eslint-disable-line
+    err = new Error('Request error occured. Please check Internet connection and try again.'); //eslint-disable-line
     console.log('error.request', error.request); // eslint-disable-line no-console
   } else {
     // Something happened in setting up the request that triggered an Error

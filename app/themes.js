@@ -3,6 +3,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 const PRIMARY = '#18181e';
 const SECONDARY = '#dec79b';
+const PRIMARY_LIGHT = '#46464b';
 
 const theme = createMuiTheme({
   useNextVariants: true,
@@ -21,6 +22,9 @@ const theme = createMuiTheme({
         backgroundColor: PRIMARY,
         border: `1px solid ${SECONDARY}`,
       },
+    },
+    MuiInput: {
+      root: { backgroundColor: PRIMARY_LIGHT },
     },
   },
 });

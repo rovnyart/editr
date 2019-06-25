@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -7,6 +8,8 @@ import { Form, Field } from 'react-final-form';
 import Typography from '@material-ui/core/Typography';
 
 import AppContext from '../context';
+import api from '../utils/api';
+import useNotifications from '../hooks/notifications';
 
 import TextField from './inputs/TextField';
 
@@ -23,8 +26,22 @@ export default function AuthButton() {
   const [type, setType] = useState('login');
   const { authUser } = useContext(AppContext);
   const classes = useStyles();
-  const onSubmit = async (credentials) => {
-    await authUser({ credentials });
+  const showError = useNotifications('error');
+  const showSuccess = useNotifications('success');
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const onSubmit = async ({ email, password, regEmail, regPassword }) => {
+    try {
+      const token = await executeRecaptcha('auth');
+      if (!token) return;
+      if (type === 'login') await authUser({ credentials: { email, password } });
+      else {
+        await api.post('/api/users', { email: regEmail, password: regPassword });
+        await authUser({ credentials: { email: regEmail, password: regPassword } });
+      }
+      showSuccess(type === 'login' ? 'Successful login' : 'Registration successful');
+    } catch (error) {
+      showError(error.message);
+    }
   };
   return (
     <React.Fragment>
@@ -39,36 +56,39 @@ export default function AuthButton() {
           render={({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
               <Grid container direction="column" spacing={2}>
-                <Grid item align="center"><Typography variant="body2">LOGIN / REGISTRATION</Typography></Grid>
-                {type === 'login' && (
-                  <>
-                    <Grid item>
-                      <Field
-                        name="email" label="email" fullWidth
-                        component={TextField}
-                        InputLabelProps={{ shrink: true }}
-                      />
-                    </Grid>
-                    <Grid item>
-                      <Field
-                        name="password" label="password" fullWidth
-                        component={TextField} InputLabelProps={{ shrink: true }}
-                        type="password"
-                      />
-                    </Grid>
-                    <Grid item>
-                      <Button fullWidth type="submit">Login</Button>
-                    </Grid>
-                  </>
-                )}
-                {type === 'register' && (
+                <Grid item align="center">
+                  <Typography variant="body2">
+                    {type === 'login' ? 'SIGN IN' : 'REGISTER'}
+                  </Typography>
+                </Grid>
+                <>
+                  <Grid item>
+                    <Field
+                      name={type === 'login' ? 'email' : 'regEmail'} label="email" fullWidth
+                      component={TextField}
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Field
+                      name={type === 'login' ? 'password' : 'regPassword'} label="password" fullWidth
+                      component={TextField} InputLabelProps={{ shrink: true }}
+                      type="password"
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Button fullWidth type="submit">{type === 'login' ? 'Login' : 'Register'}</Button>
+                  </Grid>
+                </>
+                {type === 'register' ? (
                   <Grid item>
                     <Button fullWidth onClick={() => setType('login')}>Have account</Button>
                   </Grid>
+                ) : (
+                  <Grid item>
+                    <Button fullWidth onClick={() => setType('register')}>Create account</Button>
+                  </Grid>
                 )}
-                <Grid item>
-                  <Button fullWidth onClick={() => setType('register')}>Register</Button>
-                </Grid>
               </Grid>
             </form>
           )}
