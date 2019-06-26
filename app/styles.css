@@ -1,0 +1,22 @@
+html, body {
+  padding: 0px;
+  margin: 0px;
+  font-weight: 300;
+  background-color: #777;
+
+  font-family: Helvetica, Arial, sans-serif !important;
+
+  &:global(.fontLoaded) {
+    font-family: 'Montserrat', Helvetica, Arial, sans-serif !important;
+  }
+}
+
+/* http://labs.enonic.com/articles/remove-forced-yellow-input-background-in-chrome */
+input:-webkit-autofill {
+  -webkit-text-fill-color: #dec79b !important;
+  -webkit-box-shadow: inset 0 0 0 50px #46464b !important;
+}
+
+input, textarea, select, button {
+  font-family: inherit;
+}

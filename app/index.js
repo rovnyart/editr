@@ -8,6 +8,8 @@ import { SnackbarProvider } from 'notistack';
 import App from './app';
 import theme from './themes';
 
+import './styles.css';
+
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <SnackbarProvider maxSnack={3}>

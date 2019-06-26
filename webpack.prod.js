@@ -44,6 +44,15 @@ module.exports = {
               },
             ],
           },
+          {
+            test: /\.css$/,
+            exclude: /node_modules/,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: require.resolve('css-loader'), options: { modules: true, importLoaders: 1 } }, // eslint-disable-line max-len
+              { loader: require.resolve('postcss-loader'), options: { config: { path: __dirname } } },
+            ],
+          },
           { // Do not transform vendor's CSS with PostCSS
             test: /\.css$/,
             include: /node_modules/,
