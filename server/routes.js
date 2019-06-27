@@ -18,6 +18,7 @@ export default function (app) {
 
   app.use('/api/notes', require('./api/notes').default);
   app.use('/api/users', require('./api/users').default);
+  app.use('/api/tokens', require('./api/tokens').default);
 
   app.use('/auth', require('./auth').default);
 

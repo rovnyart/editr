@@ -20,6 +20,10 @@ export default (sequelize, dataTypes) => {
     },
   });
 
+  Users.associate = ({ notes }) => {
+    Users.hasMany(notes);
+  };
+
   Users.prototype.authenticate = async function authenticate(password) {
     return bcrypt.compareSync(password, this.password);
   };
@@ -29,6 +33,7 @@ export default (sequelize, dataTypes) => {
     const salt = bcrypt.genSaltSync();
     this.password = bcrypt.hashSync(this.password, salt); // eslint-disable-line no-param-reassign
   };
+
 
   return Users;
 };
