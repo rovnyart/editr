@@ -26,6 +26,14 @@ const theme = createMuiTheme({
     MuiInput: {
       root: { backgroundColor: PRIMARY_LIGHT },
     },
+    MuiButton: {
+      root: {
+        '&$disabled': {
+          backgroundColor: SECONDARY,
+          color: PRIMARY_LIGHT,
+        },
+      },
+    },
   },
 });
 

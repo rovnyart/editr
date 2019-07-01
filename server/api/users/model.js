@@ -4,6 +4,7 @@ export default (sequelize, dataTypes) => {
   const Users = sequelize.define('users', {
     email: { type: dataTypes.STRING, unique: true, allowNull: false, validate: { notEmpty: true, isEmail: true } },
     password: { type: dataTypes.STRING, allowNull: false, validate: { notEmpty: true } },
+    isEmailConfirmed: { type: dataTypes.BOOLEAN, allowNull: false, defaultValue: false },
   }, {
     defaultScope: { attributes: { exclude: ['password'] } },
     indexes: [

@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { Form, Field } from 'react-final-form';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import AppContext from '../context';
 import api from '../utils/api';
@@ -38,7 +39,7 @@ export default function AuthButton() {
         await api.post('/api/users', { email: regEmail, password: regPassword });
         await authUser({ credentials: { email: regEmail, password: regPassword } });
       }
-      showSuccess(type === 'login' ? 'Successful login' : 'Registration successful');
+      showSuccess(type === 'login' ? 'Successful login' : 'Registration successful. Please check your inbox and confirm email address'); // eslint-disable-line max-len
     } catch (error) {
       showError(error.message);
     }
@@ -53,7 +54,7 @@ export default function AuthButton() {
         <Form
           onSubmit={onSubmit}
           initialValues={{ email: '', password: '' }}
-          render={({ handleSubmit }) => (
+          render={({ handleSubmit, submitting }) => (
             <form onSubmit={handleSubmit}>
               <Grid container direction="column" spacing={2}>
                 <Grid item align="center">
@@ -77,7 +78,10 @@ export default function AuthButton() {
                     />
                   </Grid>
                   <Grid item>
-                    <Button fullWidth type="submit">{type === 'login' ? 'Login' : 'Register'}</Button>
+                    <Button disabled={submitting} fullWidth type="submit">
+                      {type === 'login' ? 'Login' : 'Register'}
+                      {submitting && <CircularProgress size={16} />}
+                    </Button>
                   </Grid>
                 </>
                 {type === 'register' ? (
