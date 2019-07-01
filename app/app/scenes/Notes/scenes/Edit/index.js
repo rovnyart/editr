@@ -10,7 +10,6 @@ import { useData } from '../../../../hooks/useData';
 import Select from '../../../../components/inputs/Select';
 import api from '../../../../utils/api';
 import AppContext from '../../../../context';
-import useNotification from '../../../../hooks/notifications';
 
 import Editor from './components/Editor';
 import AutoSave from './components/AutoSave';
@@ -25,7 +24,6 @@ const useStyles = makeStyles({
 });
 
 export default function Edit({ match: { params: { id } = {} }, history }) {
-  const showInfo = useNotification('info');
   const classes = useStyles();
   const [, loaded, data, load, error] = useData({ dataType: 'note', options: id });
   const { notification } = useContext(AppContext);
@@ -40,9 +38,8 @@ export default function Edit({ match: { params: { id } = {} }, history }) {
     if (notification?.id === id) {
       api.put(`/api/notes/${id}`, notification);
       load();
-      showInfo('Note updated');
     }
-  }, [id, load, notification, showInfo]);
+  }, [id, load, notification]);
 
 
   const onSubmit = async (values) => api.put(`/api/notes/${id}`, values);

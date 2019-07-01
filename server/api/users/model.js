@@ -4,6 +4,7 @@ export default (sequelize, dataTypes) => {
   const Users = sequelize.define('users', {
     email: { type: dataTypes.STRING, unique: true, allowNull: false, validate: { notEmpty: true, isEmail: true } },
     password: { type: dataTypes.STRING, allowNull: false, validate: { notEmpty: true } },
+    isEmailConfirmed: { type: dataTypes.BOOLEAN, allowNull: false, defaultValue: false },
   }, {
     defaultScope: { attributes: { exclude: ['password'] } },
     indexes: [
@@ -20,6 +21,10 @@ export default (sequelize, dataTypes) => {
     },
   });
 
+  Users.associate = ({ notes }) => {
+    Users.hasMany(notes);
+  };
+
   Users.prototype.authenticate = async function authenticate(password) {
     return bcrypt.compareSync(password, this.password);
   };
@@ -29,6 +34,7 @@ export default (sequelize, dataTypes) => {
     const salt = bcrypt.genSaltSync();
     this.password = bcrypt.hashSync(this.password, salt); // eslint-disable-line no-param-reassign
   };
+
 
   return Users;
 };

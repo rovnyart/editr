@@ -7,5 +7,9 @@ export default (sequelize, dataTypes) => {
     paranoid: false,
   });
 
+  Notes.associate = ({ users }) => {
+    Notes.belongsTo(users);
+  };
+
   return Notes;
 };

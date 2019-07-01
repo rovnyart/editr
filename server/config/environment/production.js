@@ -1,8 +1,3 @@
-// Development specific configuration
-import argumentsParser from 'minimist';
-
-const argv = argumentsParser(process.argv.slice(2));
-
 export default {
   sequelize: {
     dialect: 'postgres',
@@ -15,6 +10,19 @@ export default {
     logging: false,
     define: { underscored: true },
   },
-  disableFrontend: argv['disable-frontend'] || process.env.DISABLE_FRONTEND,
+  mailer: {
+    brandName: 'Eddtr (development)',
+    from: 'noreply@eddtr.space',
+    smtpConfig: {
+      host: 'smtp.beget.ru',
+      port: 25,
+      secure: false,
+      logger: true,
+      auth: {
+        user: 'noreply@eddtr.space',
+        pass: 'Bl00dporn1488',
+      },
+    },
+  },
   port: 3000,
 };

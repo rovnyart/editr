@@ -10,6 +10,7 @@ import useNotifications from './hooks/notifications';
 import AppLayout from './components/AppLayout';
 import AppContext from './context';
 import api from './utils/api';
+import TokenResolver from './components/TokenResolver';
 
 const socketUrl = process.env.NODE_ENV === 'production' ? 'http://eddtr.space' : 'http://localhost';
 const wsClient = io.connect(`${socketUrl}:${config.port}`);
@@ -80,6 +81,7 @@ export default function App(props) {
         <GoogleReCaptchaProvider reCaptchaKey="6LcgrKoUAAAAAPjE1Cy--qfjfzQEjD-4g4JGuAXE">
           <AppLayout {...props}>
             <Switch>
+              <Route path="/token/:token/:action?" component={TokenResolver} />
               <Route path="/notes" component={Notes} />
               <Redirect to="/notes" />
             </Switch>
