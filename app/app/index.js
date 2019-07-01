@@ -12,7 +12,7 @@ import AppContext from './context';
 import api from './utils/api';
 import TokenResolver from './components/TokenResolver';
 
-const socketUrl = process.env.NODE_ENV === 'production' ? 'http://eddtr.space' : 'http://localhost';
+const socketUrl = process.env.NODE_ENV === 'production' ? 'eddtr.space' : 'localhost';
 const wsClient = io.connect(`${socketUrl}:${config.port}`);
 const cookie = new Cookie();
 
