@@ -13,7 +13,7 @@ import api from './utils/api';
 import TokenResolver from './components/TokenResolver';
 
 const socketUrl = process.env.NODE_ENV === 'production' ? 'eddtr.space' : 'localhost';
-const wsClient = io.connect(`${socketUrl}:${config.port}`);
+const wsClient = io.connect(`${socketUrl}:${config.port}`, { secure: true });
 const cookie = new Cookie();
 
 const Notes = React.lazy(() => import('./scenes/Notes'));

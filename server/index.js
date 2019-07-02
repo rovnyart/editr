@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
-import http from 'http';
+import https from 'https';
+import fs from 'fs';
+import path from 'path';
 
 import express from 'express';
 import socketIO from 'socket.io';
@@ -10,7 +12,11 @@ import apiRoutes from './routes';
 
 const { dbConnect, notifyListener } = db;
 const app = express();
-const server = http.createServer(app);
+const options = {
+  cert: fs.readFileSync(path.resolve(__dirname, './config/ssl/eddtr.pem')),
+  key: fs.readFileSync(path.resolve(__dirname, './config/ssl/eddtr.key')),
+};
+const server = https.createServer(options, app);
 serverSetup(app);
 apiRoutes(app);
 
