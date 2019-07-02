@@ -4,16 +4,13 @@ import Cookie from 'universal-cookie';
 import io from 'socket.io-client';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
-import config from '../../server/config/environment';
-
 import useNotifications from './hooks/notifications';
 import AppLayout from './components/AppLayout';
 import AppContext from './context';
 import api from './utils/api';
 import TokenResolver from './components/TokenResolver';
 
-const socketUrl = process.env.NODE_ENV === 'production' ? 'eddtr.space' : 'localhost';
-const wsClient = io.connect(`${socketUrl}:${config.port}`, { secure: true });
+const wsClient = io.connect();
 const cookie = new Cookie();
 
 const Notes = React.lazy(() => import('./scenes/Notes'));
