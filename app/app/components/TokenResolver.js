@@ -11,15 +11,19 @@ export default function TokenResolver({ history, match: { params } }) {
   const checkToken = useCallback(
     async () => {
       try {
+        if (params.action === 'destroy') {
+          await api.delete(`/api/tokens/${params.token}`);
+          showInfo('Thank you! Registration token deleted.');
+          return;
+        }
         const { data: { action } } = await api.get(`/api/tokens/${params.token}`);
         if (action === 'registration') showSuccess('Email confirmed');
-        else showInfo('Thank you! Registration token deleted.');
       } catch (error) {
         showError(error.message);
       } finally {
         history.push('/');
       }
-    }, [history, params.token, showError, showInfo, showSuccess]
+    }, [history, params.action, params.token, showError, showInfo, showSuccess]
   );
 
   useEffect(() => {

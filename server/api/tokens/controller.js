@@ -18,8 +18,22 @@ export async function check(req, res) {
       if (!user) throw new Error('User not found o_O');
       await user.update({ isEmailConfirmed: true }, { transaction });
     }
-    await token.destroy();
+    await token.destroy({ transaction });
+    await transaction.commit();
     return res.status(200).json(token);
+  } catch (error) {
+    await transaction.rollback();
+    return res.status(412).json({ message: error.message });
+  }
+}
+
+export async function destroy(req, res) {
+  const { id } = req.params;
+  try {
+    const token = await db.sequelize.models.tokens.findByPk(id);
+    if (!token) throw new Error('Invalid link');
+    await token.destroy();
+    return res.sendStatus(200);
   } catch (error) {
     return res.status(412).json({ message: error.message });
   }
